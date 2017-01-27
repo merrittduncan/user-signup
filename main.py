@@ -14,11 +14,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 import webapp2
 
+def build_page(signup_table):
+    username_input = "<tr><td>Username</td><td><input type='text' name='username'></td></tr>"
+
+    password_input = "<tr><td>Password</td><td><input type='text' name='password'></td></tr>"
+
+    verify_input = "<tr><td>Verify Password</td><td><input type='text' name='verify'></td></tr>"
+
+    email_input = "<tr><td>Email (optional)</td><td><input type='text' name='email'></td></tr>"
+
+    submit = "<input type='submit'/>"
+
+    tableform = "<table>" + username_input + password_input + verify_input + email_input + "</table>"
+
+    form = ("<form method='post'>" + tableform + submit + "</form>")
+
+    header = "<h2>Signup</h2>"
+
+    return header + form
+
 class MainHandler(webapp2.RequestHandler):
+
     def get(self):
-        self.response.write('Hello world!')
+        content = build_page("")
+        self.response.write(content)
+
+    def post(self):
+        message = self.request.get('message')
+        rotation = int(self.request.get('rotation'))
+        encrypted_message = caesar.encrypt(message, rotation)
+        escaped_message = cgi.escape(encrypted_message)
+        self.response.write("Secret Message: " + encrypted_message)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
