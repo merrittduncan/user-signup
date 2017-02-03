@@ -17,11 +17,13 @@ def valid_password(password):
     else:
         return True
 
-def valid_email(email):
-    if email_re.match(email) == None:
-        return False
-    else:
-        return True
+def valid_email(email, username, password):
+    if email:
+        if email_re.match(email) == None:
+            if valid_password(password) == True and valid_username(username) == True:
+                return True
+            if valid_password(password) == False or valid_username(username) == False:
+                return False
 
 page_header ="""
 <!DOCTYPE html>
@@ -97,7 +99,7 @@ class Signup(webapp2.RequestHandler):
             verify_error = "Please verify password."
         if verify != password:
             verify_error = "Passwords do not match."
-        if valid_email(email) == False:
+        if valid_email(email, username, password) == False:
            email_error = "Please enter a valid email."
 
         if not username_error and not password_error and not verify_error and not email_error:
